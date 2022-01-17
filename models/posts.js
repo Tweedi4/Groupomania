@@ -1,7 +1,14 @@
-const { Model } = require("sequelize")
+const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-    class Posts extends Model {}
+    class Posts extends Model {
+        static associate(models) {
+            // define association here
+            Posts.belongsTo(models.Posts, {foreignKey: 'userId'});
+            Posts.hasMany(models.Comments)
+            Posts.hasMany(models.Likes)
+          }
+    };
     Posts.init({
         title: {
             type: DataTypes.TEXT,
@@ -23,6 +30,6 @@ module.exports = (sequelize, DataTypes) => {
     {
         sequelize,
         modelName: "Posts"
-    })
+    });
     return Posts
-}
+};

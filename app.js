@@ -18,7 +18,7 @@ const userRoutes = require("./routes/user");
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
   host: 'localhost',
   dialect: 'mysql',
-  port: 3306,
+  port: 3306
 });
 
 sequelize
@@ -47,16 +47,16 @@ app.get('/', function(req, res) {
     res.send('hello world');
   });
 
-app.post('/', function (req, res) {
-    res.send('POST request to the homepage');
-  });
 
-app.use(bodyParser.json());
 
-app.use(helmet());
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+//app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(helmet());
+app.post('/', function (req, res) {
+    res.send('POST request to the homepage'+ JSON.stringify(req.body));
+  });
 
 
 app.use('/api/user', userRoutes);
