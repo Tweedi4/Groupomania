@@ -12,13 +12,13 @@ const cors = require('cors');
 //Routes
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
-//const postsRoutes = require('./routes/posts');
+const postsRoutes = require('./routes/posts');
+const commentsRoutes = require('./routes/comments');
 // const path = require('path');
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
   host: 'localhost',
   dialect: 'mysql',
-  port: 3306
 });
 
 sequelize
@@ -63,7 +63,8 @@ app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
 
 //app.use('/images', express.static(path.join(__dirname, 'images')));
-//app.use('/api/posts', postsRoutes);
+app.use('/api/posts', postsRoutes);
+app.use('/api/comments', commentsRoutes);
 
 
 

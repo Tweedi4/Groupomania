@@ -10,6 +10,13 @@ module.exports = (sequelize, DataTypes) => {
           }
     };
     Posts.init({
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true,
+          },
+
         title: {
             type: DataTypes.TEXT,
             allowNull: false
@@ -24,8 +31,18 @@ module.exports = (sequelize, DataTypes) => {
         },
         image_url: {
           type: DataTypes.TEXT,
-          allowNull: false
-      },
+          allowNull: true
+        },
+        createdAt: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            field: "createdAt"
+        },
+        updatedAt: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            field: "updatedAt"
+        },
     }, 
     {
         sequelize,
