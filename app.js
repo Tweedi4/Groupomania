@@ -7,7 +7,7 @@ require('dotenv').config();
 
 const helmet = require("helmet");
 const cors = require('cors');
- 
+//const errorHandler = require('errorhandler') ;
 
 //Routes
 const authRoutes = require("./routes/auth");
@@ -33,6 +33,8 @@ sequelize
 
 
 const app = express();
+
+//app.use(errorHandler({dumpExceptions: true, showStack: true})); 
 // Middleware appliqué à toutes les routes, permettant l'envoie de requête et d'accéder à l'API 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -42,26 +44,17 @@ app.use((req, res, next) => {
 });
 
 
-//tests
-app.get('/', function(req, res) {
-    res.send('hello world');
-  });
-
-
-
 app.use(cors());
+
 app.use(bodyParser.json());
-//app.use(express.json());
+app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-//app.use(helmet());
-app.post('/', function (req, res) {
-    res.send('POST request to the homepage'+ JSON.stringify(req.body));
-  });
+app.use(helmet());
 
 
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
-
+//likesRoutes
 //app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/posts', postsRoutes);
 app.use('/api/comments', commentsRoutes);

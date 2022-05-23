@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     class Posts extends Model {
         static associate(models) {
             // define association here
-            Posts.belongsTo(models.Posts, {foreignKey: 'userId'});
+            Posts.belongsTo(models.Users, {foreignKey: 'userId', allowNull: false, onDelete: 'cascade', onUpdate: 'cascade'});
             Posts.hasMany(models.Comments)
             Posts.hasMany(models.Likes)
           }

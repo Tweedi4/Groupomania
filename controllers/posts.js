@@ -1,13 +1,18 @@
-const { model , Posts} = require('../models');
+const { model , Posts, Users} = require('../models');
 
+const jwt = require('jsonwebtoken');
 
 
 //create post
 exports.createPost = (req, res, next) => {
+    console.log("test : " + req.body);
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+    const userId= decodedToken.userId;
 Posts.create({
     title: req.body.title,
     content: req.body.content,
-    userId: req.body.userId,
+    userId: userId,
     }).then(submittedPost => res.send(submittedPost))
     };
 
@@ -18,9 +23,11 @@ Posts.findAll().then(post => res.send(post));
 
 //get one post by id
 exports.getOnePost = (req, res, next) => {
-Posts.findAll({
-    where: {
-        id: req.params.id
+Posts.findOne({
+    where: {id: req.params.id},
+    include: {
+        model: Users,
+        attributes: ['pseudo','email','image','createdAt','updatedAt']
     }
     }).then(post => res.send(post))
     };

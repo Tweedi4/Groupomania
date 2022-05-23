@@ -51,7 +51,7 @@ exports.signup = (req, res, next) => {
 
 
 exports.login = (req, res, next) => {
-console.log(req.body.password)
+console.log(req.body.email)
 //Look for mail address in db
 const email = req.body.email
 Users.findOne({
@@ -71,10 +71,10 @@ Users.findOne({
               }
               //If the password is correct, then creation of a token
               res.status(200).json({
-                  userId: Users.id,
+                  userId: user.id,
                   email: user.email,
                   token: jwt.sign(
-                      { userId: Users.id },
+                      { userId: user.id },
                       //création d'un token
                       'RANDOM_TOKEN_SECRET',
                       //valable 24h

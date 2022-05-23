@@ -4,12 +4,9 @@ const { model , Comments} = require('../models');
 exports.getAllComments = (req, res, next) => {
 Comments.findAll().then(comments => res.send(comments));
     };
-
 exports.getOneComment = (req, res, next) => {
-Comments.findAll({
-    where: {
-        id: req.params.id
-    }
+Comments.findOne({
+    where: {id: req.params.id}
 }).then(comment => res.send(comment))
     };
 exports.createComment = (req, res, next) => {
