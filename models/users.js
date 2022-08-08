@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     class Users extends Model {
         static associate(models) {
             // define association here
-            Users.hasMany(models.Posts, {foreignKey: 'userId'});
+            Users.hasMany(models.Posts, {foreignKey: 'userId', allowNull: false, onDelete: 'cascade', onUpdate: 'cascade'});
           }
     };
     Users.init({
@@ -32,9 +32,14 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         image: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             allowNull: true,
         },
+        is_admin: {
+            type: DataTypes.INTEGER(1),
+            allowNull: false,
+            defaultValue: "0",
+          },
         createdAt: {
             type: DataTypes.DATE,
             allowNull: false,

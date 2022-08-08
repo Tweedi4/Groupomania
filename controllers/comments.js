@@ -1,14 +1,28 @@
-const { model , Comments} = require('../models');
+const { model , Comments, Users} = require('../models');
 
-//get all comments
+
+exports.getAllCommentsFromPost = (req, res, next) => {
+    Comments.findAll({
+        where: {postId: req.params.id},
+        include: {
+            model: Users,
+            attributes: ['pseudo','image']
+        }
+    }).then(comments => res.send(comments))
+        };   
+
+        exports.getOneComment = (req, res, next) => {
+            Comments.findOne({
+                where: {id: req.params.id}
+            }).then(comment => res.send(comment))
+                };
+            
+/*
 exports.getAllComments = (req, res, next) => {
 Comments.findAll().then(comments => res.send(comments));
-    };
-exports.getOneComment = (req, res, next) => {
-Comments.findOne({
-    where: {id: req.params.id}
-}).then(comment => res.send(comment))
-    };
+    };    
+*/
+
 exports.createComment = (req, res, next) => {
 Comments.create({
     message: req.body.message,

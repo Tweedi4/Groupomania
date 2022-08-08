@@ -3,21 +3,19 @@ const jwt = require('jsonwebtoken');
 // Middleware d'authentification
 module.exports = (req, res, next) => {
   try {
-    //console.log(req);
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
     const userId = decodedToken.userId;
 //    if (req.body.userId && req.body.userId !== userId) {
-    
-    if (req.body.userId && (userId != req.body.userId)) {
+    if (req.body.userId && (req.body.userId != userId)) {
       throw 'User ID invalide' ;
     } else {
-      console.log("tout va bien :" + userId + " = " + req.body.userId);
+      console.log("tout va bien :" + userId);
       next();
     }
   } catch {
     res.status(401).json({
-      error: new Error('Requête invalide!' + req.body.userId)
+      error: new Error('Requête invalide!')
     });
   }
 };

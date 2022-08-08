@@ -1,4 +1,3 @@
-/*
 
 const multer = require('multer');
 
@@ -19,6 +18,5 @@ const storage = multer.diskStorage({
     } // Indique à multer de remplacer le nom d'origine par un timestamp 
 });
 // Importation de multer et indique qu'on gère uniquement les téléchargements de fichiers image
-module.exports = multer({storage:storage}).single('image');
+module.exports = multer({storage:storage}).single('image_url');
 
-*/

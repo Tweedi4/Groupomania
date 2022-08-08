@@ -13,10 +13,15 @@ const { model , Users} = require('../models');
 exports.signup = (req, res, next) => {
     console.log(req.body);
     const {email, pseudo, password} = req.body
+    const regexPasswordHard = /^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
   //Verify parameters
   if (email == null || pseudo == null || password == null) {
       return res.status(400).json({ 'error': 'missing parameters'})
+  }
+
+  if (!regexPasswordHard.test(password)) {
+    return res.status(400).json({ error: 'Invalid password, please put at least 8 characters, including 1 capital letter and a number'});
   }
 
     Users.findOne({
@@ -41,7 +46,7 @@ exports.signup = (req, res, next) => {
                       })
               })
           } else {
-              return res.status(409).json({ 'error': 'this user already exist' });
+              return res.status(400).json({ 'error': 'this user already exist' });
           }
       })
       .catch(function (err) {

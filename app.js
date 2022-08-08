@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const { Sequelize } = require('sequelize');
 const bodyParser = require('body-parser');
 
@@ -6,6 +7,8 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 
 const helmet = require("helmet");
+const xss = require('xss-clean');
+
 const cors = require('cors');
 //const errorHandler = require('errorhandler') ;
 
@@ -14,7 +17,6 @@ const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const postsRoutes = require('./routes/posts');
 const commentsRoutes = require('./routes/comments');
-// const path = require('path');
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
   host: 'localhost',
@@ -49,13 +51,19 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(helmet());
 
+//helmet
+app.use(helmet());
+//xss protection
+app.use(xss());
+
+
+//images destination
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
-//likesRoutes
-//app.use('/images', express.static(path.join(__dirname, 'images')));
+//app.use('/api/like', likeRoutes);
 app.use('/api/posts', postsRoutes);
 app.use('/api/comments', commentsRoutes);
 

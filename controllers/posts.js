@@ -5,14 +5,12 @@ const jwt = require('jsonwebtoken');
 
 //create post
 exports.createPost = (req, res, next) => {
-    console.log("test : " + req.body);
-    const token = req.headers.authorization.split(' ')[1];
-    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
-    const userId= decodedToken.userId;
+    console.log(req);
 Posts.create({
     title: req.body.title,
     content: req.body.content,
-    userId: userId,
+    userId: req.body.userId,
+    image_url: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
     }).then(submittedPost => res.send(submittedPost))
     };
 
@@ -46,9 +44,7 @@ Posts.update({
 
 //delete post
 exports.deletePost = (req, res, next) => {
-Posts.destroy({
-    where: {
-        id: req.params.id
-    }
-}).then(() => res.send("success"))
+Posts.destroy({where: {id: req.params.id}})
+    .then(() => res.status(200).json({ message: 'Post deleted !' }))
+    .catch(error => res.status(400).json({ error }));
     };
