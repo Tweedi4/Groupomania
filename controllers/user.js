@@ -20,28 +20,40 @@ exports.deleteUser = (req, res, next) => {
 
 exports.updateUser = (req, res, next) => {
   const id = req.body.userId;
-  //const pseudo = req.body.pseudo;
-  //const email = req.body.email
-  const file = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
-  console.log(file);
+  const pseudo = req.body.newpseudo;
+  const email = req.body.email;
+  const filename = req.file;
+  
+  console.log(req.body);
 
-  /*const monUser = Users.findOne({where: {id: id}});
-  if (pseudo != '') {
-    monUser.set({pseudo: pseudo});
-  }
-  if (file != '') {
-    monUser.set({image: file});
-  }
-monUser.save();*/
-
+  Users.findOne({where: {id: id}})
+    .then((monUser) => {
+      //console.log(monUser);
+      if (pseudo != '') {
+        console.log('set pseudo ok ' + pseudo)
+        monUser.set({pseudo: pseudo});
+      }
+      if (email != '') {
+        monUser.set({email: email});
+      }
+      if (filename) {
+        const myImage = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+        console.log(myImage);
+        monUser.set({image: myImage});
+      }
+    monUser.save();    
+    })
+    .catch(error => res.status(400).json({ error }))
+/*
   Users.update(
-      //{ pseudo: pseudo },
-      //{ email: email},
+      { pseudo: pseudo },
+      { email: email},
       {image: file},
       { where: { id: id } }
   )
       .then(() => res.status(200).json({ message: 'User updated !' }))
       .catch(error => console.error( error ));
 //      .catch(error => res.status(400).json({ error }));
-  };
+*/
+};
 

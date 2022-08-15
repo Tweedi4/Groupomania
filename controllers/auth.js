@@ -21,7 +21,7 @@ exports.signup = (req, res, next) => {
   }
 
   if (!regexPasswordHard.test(password)) {
-    return res.status(400).json({ error: 'Invalid password, please put at least 8 characters, including 1 capital letter and a number'});
+   return res.status(400).json({ 'error': 'Mot de passe invalide, au minimum 8 caractères, dont 1 majuscule et un nombre'});
   }
 
     Users.findOne({
@@ -46,7 +46,7 @@ exports.signup = (req, res, next) => {
                       })
               })
           } else {
-              return res.status(400).json({ 'error': 'this user already exist' });
+              return res.status(400).json({ 'error': 'Cet email existe déjà!' });
           }
       })
       .catch(function (err) {
@@ -65,14 +65,14 @@ Users.findOne({
   .then(user => {
       //If user is not in db
       if (!user) {
-          return res.status(401).json({ error: 'This User is not in db !' });
+          return res.status(401).json({ error: 'Cet utilisateur ne figure pas dans la base de donnée !' });
       }
       //If the user is in db
       bcrypt.compare(req.body.password, user.password)
           .then(valid => {
               //If the password isn't correct
               if (!valid) {
-                  return res.status(401).json({ error: 'Invalid password !' });
+                  return res.status(401).json({ error: 'Mot de passe invalide !' });
               }
               //If the password is correct, then creation of a token
               res.status(200).json({
