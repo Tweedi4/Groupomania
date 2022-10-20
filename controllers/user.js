@@ -28,7 +28,6 @@ exports.updateUser = (req, res, next) => {
 
   Users.findOne({where: {id: id}})
     .then((monUser) => {
-      //console.log(monUser);
       if (pseudo != '') {
         console.log('set pseudo ok ' + pseudo)
         monUser.set({pseudo: pseudo});
@@ -41,19 +40,18 @@ exports.updateUser = (req, res, next) => {
         console.log(myImage);
         monUser.set({image: myImage});
       }
-    monUser.save();    
+    monUser.save()
+    .then(function (monUser) {
+      return res.status(201).json({
+          'email': monUser.email,
+          'image': monUser.image,
+          'pseudo': monUser.pseudo
+      })
+  })
+  .catch(function (err) {
+      return res.status(500).json({ 'error': 'cant update user' });
+  })  
     })
     .catch(error => res.status(400).json({ error }))
-/*
-  Users.update(
-      { pseudo: pseudo },
-      { email: email},
-      {image: file},
-      { where: { id: id } }
-  )
-      .then(() => res.status(200).json({ message: 'User updated !' }))
-      .catch(error => console.error( error ));
-//      .catch(error => res.status(400).json({ error }));
-*/
 };
 
