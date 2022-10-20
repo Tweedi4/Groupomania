@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 const { Sequelize } = require('sequelize');
 const bodyParser = require('body-parser');
+const env = process.env.NODE_ENV || 'development'
+const config = require(__dirname + '/config/config.json')[env]
 
 // Charge la variable d'environnement
 require('dotenv').config();
@@ -18,9 +20,9 @@ const userRoutes = require("./routes/user");
 const postsRoutes = require('./routes/posts');
 const commentsRoutes = require('./routes/comments');
 
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-  host: 'localhost',
-  dialect: 'mysql',
+const sequelize = new Sequelize(config.database, config.username, config.password, {
+  host: config.host,
+  dialect: config.dialect,
 });
 
 sequelize
