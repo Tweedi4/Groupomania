@@ -25,7 +25,7 @@ Posts.findOne({
     where: {id: req.params.id},
     include: {
         model: Users,
-        attributes: ['pseudo','email','image','createdAt','updatedAt']
+        attributes: ['pseudo','email','image','createdAt','updatedAt'],
     }
     }).then(post => res.send(post))
     };
